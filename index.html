@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Herb Force Scale Control — ระบบบำบัดน้ำจากธรรมชาติ</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Sarabun', sans-serif;
+      background: #f7f9f7;
+      color: #1a2e22;
+      line-height: 1.7;
+    }
+
+    /* NAV */
+    nav {
+      background: #0a2e1f;
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav-logo {
+      font-size: 15px;
+      font-weight: 600;
+      color: #6fcf97;
+      letter-spacing: 0.05em;
+    }
+    .nav-cta {
+      font-size: 13px;
+      color: #9fc9ae;
+      text-decoration: none;
+      border: 0.5px solid #2e5e40;
+      padding: 6px 16px;
+      border-radius: 6px;
+      transition: background 0.15s;
+    }
+    .nav-cta:hover { background: #1c3d2a; color: #e8f5ee; }
+
+    /* HERO */
+    .hero {
+      background: #0a2e1f;
+      padding: 5rem 2rem 4rem;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -80px; left: 50%;
+      transform: translateX(-50%);
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: #1a5c36;
+      opacity: 0.2;
+      pointer-events: none;
+    }
+    .hero-eyebrow {
+      font-size: 12px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      color: #6fcf97;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+    .hero h1 {
+      font-size: clamp(26px, 4vw, 42px);
+      font-weight: 600;
+      line-height: 1.3;
+      color: #e8f5ee;
+      margin-bottom: 1.25rem;
+      position: relative;
+    }
+    .hero h1 em { font-style: normal; color: #6fcf97; }
+    .hero-sub {
+      font-size: 17px;
+      color: #9fc9ae;
+      max-width: 560px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.75;
+      position: relative;
+    }
+    .hero-btn {
+      display: inline-block;
+      background: #1d9e75;
+      color: #e8f5ee;
+      text-decoration: none;
+      padding: 14px 36px;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 500;
+      position: relative;
+      transition: background 0.15s;
+    }
+    .hero-btn:hover { background: #0f6e56; }
+
+    /* TRUTH BANNER */
+    .truth-banner {
+      background: #1c3d2a;
+      border-left: 4px solid #6fcf97;
+      padding: 1.5rem 2rem;
+    }
+    .truth-banner p {
+      font-size: 15px;
+      color: #b5dfc3;
+      line-height: 1.75;
+      max-width: 680px;
+      margin: 0 auto;
+      text-align: center;
+    }
+    .truth-banner strong { color: #f2c94c; font-weight: 600; }
+
+    /* SECTIONS */
+    .section {
+      padding: 4rem 2rem;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+    .section-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #6b8f77;
+      margin-bottom: 0.5rem;
+    }
+    .section h2 {
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 600;
+      color: #0a2e1f;
+      margin-bottom: 0.75rem;
+      line-height: 1.35;
+    }
+    .section .lead {
+      font-size: 16px;
+      color: #3d5c47;
+      line-height: 1.8;
+      margin-bottom: 2.5rem;
+    }
+
+    .divider { height: 1px; background: #d4e8da; max-width: 760px; margin: 0 auto; }
+
+    /* COMPARE TABLE */
+    .compare-wrap { overflow-x: auto; margin-bottom: 1.5rem; }
+    table { width: 100%; border-collapse: collapse; font-size: 15px; }
+    thead tr { border-bottom: 1px solid #d4e8da; }
+    th { padding: 12px 16px; font-weight: 600; font-size: 14px; text-align: left; }
+    th:first-child { color: #6b8f77; }
+    th.bad { color: #a32d2d; }
+    th.good { color: #0f6e56; }
+    td { padding: 13px 16px; vertical-align: top; border-bottom: 1px solid #e8f3eb; line-height: 1.6; }
+    td:first-child { color: #6b8f77; font-size: 14px; font-weight: 500; }
+    .bad-cell { color: #a32d2d; }
+    .good-cell { color: #0f6e56; font-weight: 600; }
+    tr:last-child td { border-bottom: none; }
+
+    /* MECHANISM CARDS */
+    .mechanism-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+      margin-bottom: 2rem;
+    }
+    .mech-card {
+      background: #fff;
+      border: 1px solid #d4e8da;
+      border-radius: 12px;
+      padding: 1.5rem;
+    }
+    .mech-num {
+      font-size: 12px;
+      font-weight: 600;
+      color: #1d9e75;
+      letter-spacing: 0.1em;
+      margin-bottom: 0.5rem;
+    }
+    .mech-card h3 { font-size: 15px; font-weight: 600; color: #0a2e1f; margin-bottom: 0.5rem; }
+    .mech-card p { font-size: 14px; color: #3d5c47; line-height: 1.65; }
+
+    /* BENEFITS */
+    .benefits-list { list-style: none; margin-bottom: 2rem; }
+    .benefits-list li {
+      display: flex;
+      gap: 14px;
+      padding: 14px 0;
+      border-bottom: 1px solid #e8f3eb;
+      font-size: 15px;
+      color: #1a2e22;
+      line-height: 1.65;
+    }
+    .benefits-list li:last-child { border-bottom: none; }
+    .check-icon {
+      width: 22px; height: 22px;
+      background: #e1f5ee;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 2px;
+      color: #0f6e56;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    /* CTA / FORM SECTION */
+    .cta-section {
+      background: #0a2e1f;
+      padding: 4rem 2rem;
+    }
+    .cta-inner {
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    .cta-inner h2 {
+      font-size: clamp(22px, 3vw, 28px);
+      font-weight: 600;
+      color: #e8f5ee;
+      margin-bottom: 0.5rem;
+      text-align: center;
+    }
+    .cta-sub {
+      font-size: 15px;
+      color: #9fc9ae;
+      text-align: center;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+
+    .form-group { margin-bottom: 16px; }
+    .form-group label {
+      display: block;
+      font-size: 13px;
+      color: #9fc9ae;
+      margin-bottom: 6px;
+      font-weight: 500;
+    }
+    .form-group input {
+      width: 100%;
+      padding: 12px 16px;
+      background: #1c3d2a;
+      border: 1px solid #2e5e40;
+      border-radius: 8px;
+      color: #e8f5ee;
+      font-size: 15px;
+      font-family: 'Sarabun', sans-serif;
+      outline: none;
+      transition: border-color 0.15s;
+    }
+    .form-group input::placeholder { color: #4a7c5a; }
+    .form-group input:focus { border-color: #6fcf97; }
+
+    .submit-btn {
+      width: 100%;
+      padding: 15px;
+      background: #1d9e75;
+      color: #e8f5ee;
+      border: none;
+      border-radius: 8px;
+      font-size: 16px;
+      font-weight: 600;
+      font-family: 'Sarabun', sans-serif;
+      cursor: pointer;
+      margin-top: 8px;
+      transition: background 0.15s;
+    }
+    .submit-btn:hover { background: #0f6e56; }
+    .submit-btn:disabled { opacity: 0.65; cursor: not-allowed; }
+
+    .error-msg {
+      font-size: 14px;
+      color: #f09595;
+      text-align: center;
+      margin-top: 10px;
+      display: none;
+    }
+    .form-note {
+      font-size: 12px;
+      color: #4a7c5a;
+      text-align: center;
+      margin-top: 1rem;
+      line-height: 1.6;
+    }
+
+    .success-msg {
+      display: none;
+      text-align: center;
+      padding: 2.5rem 1rem;
+    }
+    .success-icon {
+      font-size: 48px;
+      color: #6fcf97;
+      margin-bottom: 1rem;
+    }
+    .success-msg h3 {
+      font-size: 22px;
+      font-weight: 600;
+      color: #e8f5ee;
+      margin-bottom: 0.5rem;
+    }
+    .success-msg p { font-size: 15px; color: #9fc9ae; line-height: 1.7; }
+
+    /* FOOTER */
+    footer {
+      background: #071f14;
+      padding: 2rem;
+      text-align: center;
+      font-size: 13px;
+      color: #4a7c5a;
+    }
+
+    @media (max-width: 600px) {
+      .hero { padding: 3.5rem 1.25rem 3rem; }
+      .section { padding: 3rem 1.25rem; }
+      .cta-section { padding: 3rem 1.25rem; }
+      nav { padding: 1rem 1.25rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav>
+    <span class="nav-logo">🌿 Herb Force</span>
+    <a href="#contact" class="nav-cta">ขอรับคำปรึกษา</a>
+  </nav>
+
+  <section class="hero">
+    <p class="hero-eyebrow">Herb Force Scale Control</p>
+    <h1>ควบคุมค่า Conductivity ตามมาตรฐานเป๊ะ<br>แต่ <em>ตะกรันก็ยังเกิด</em> อยู่ดี?</h1>
+    <p class="hero-sub">คุณไม่ได้ทำผิด — ระบบเคมีแบบเดิมมีข้อจำกัดที่ตัวเลขปิดบังไว้ ถึงเวลาฉีกกฎการดูแลระบบหล่อเย็นแบบเดิม</p>
+    <a href="#contact" class="hero-btn">ขอรับคำปรึกษาฟรี →</a>
+  </section>
+
+  <div class="truth-banner">
+    <p>คุณมอนิเตอร์ค่าน้ำทุกวัน ปรับ LSI ให้ใกล้ศูนย์ตามตำรา Blowdown ตรงเวลาทุกครั้ง... แต่พอเปิดท่อแลกเปลี่ยนความร้อน <strong>ตะกรันก็ยังเกาะอยู่เต็มเลย</strong> นั่นคือสัญญาณว่าวิธีที่ใช้อยู่ ควบคุม "ตัวเลข" ได้ แต่ไม่ได้ควบคุม "ผิวท่อ"</p>
+  </div>
+
+  <section class="section">
+    <p class="section-label">ทำไมระบบเดิมถึงสอบตก</p>
+    <h2>ตัวเลขในน้ำดี ≠ ท่อสะอาด</h2>
+    <p class="lead">เคมีทั่วไปทำได้แค่หน่วงเวลาการตกผลึก และบังคับให้คุณต้อง Blowdown น้ำทิ้งมหาศาลเพื่อเลี่ยงตัวเลขในกระดาษ แต่สิ่งที่เราต้องการจริงๆ คือ "ผิวท่อที่สะอาดและไม่มีตะกรันเกาะ" ไม่ใช่แค่ตัวเลขที่ดูดี</p>
+    <div class="compare-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>ประเด็น</th>
+            <th class="bad">ระบบเคมีเดิม</th>
+            <th class="good">Herb Force</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>โฟกัสหลัก</td>
+            <td class="bad-cell">บังคับ Blowdown ทิ้งน้ำ เพื่อคุมตัวเลข</td>
+            <td class="good-cell">เปลี่ยนประจุผิวผนัง ไม่ให้ตะกรันจับ</td>
+          </tr>
+          <tr>
+            <td>ความเสี่ยงท่อ</td>
+            <td class="bad-cell">เติมมากไปกัดกร่อน ต้องใส่ Anti-corrosion เพิ่ม</td>
+            <td class="good-cell">สกัดธรรมชาติ 100% ไม่กัดโลหะ</td>
+          </tr>
+          <tr>
+            <td>ตะไคร่น้ำ</td>
+            <td class="bad-cell">ต้องหมุน Biocide เพราะตะไคร่ดื้อยา</td>
+            <td class="good-cell">ป้องกันไม่ให้เกาะสร้าง Biofilm ตั้งแต่ต้น</td>
+          </tr>
+          <tr>
+            <td>ค่า Conductivity สูง</td>
+            <td class="bad-cell">อันตราย ต้อง Blowdown ทันที</td>
+            <td class="good-cell">รับได้ ตะกรันตกก้น Basin รอกรองออก</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <p class="section-label">กลไกการทำงาน</p>
+    <h2>ฟิสิกส์และชีววิทยา ไม่ใช่เคมีตัวเลข</h2>
+    <p class="lead">Herb Force ทำงานด้วยกลไกทางกายภาพ (Physical Mechanism) ที่เปลี่ยนพฤติกรรมของแร่ธาตุในน้ำ ไม่ใช่แค่หน่วงเวลาการตกผลึก</p>
+    <div class="mechanism-grid">
+      <div class="mech-card">
+        <p class="mech-num">01</p>
+        <h3>ลด Zeta Potential ใกล้ 0</h3>
+        <p>ผนังท่อหมดแรงดึงดูด แร่ธาตุจับตัวตกก้น Basin แทนที่จะเกาะท่อ ต่อให้ค่า Conductivity จะสูงแค่ไหนก็ตาม</p>
+      </div>
+      <div class="mech-card">
+        <p class="mech-num">02</p>
+        <h3>Zero Corrosion</h3>
+        <p>สารสกัดจากธรรมชาติ 100% ไม่มีฤทธิ์กัดกร่อนโลหะ ปลอดภัยต่อตัวเครื่องในระยะยาว ไม่ต้องเติม Anti-corrosion เพิ่ม</p>
+      </div>
+      <div class="mech-card">
+        <p class="mech-num">03</p>
+        <h3>บล็อก Biofilm</h3>
+        <p>ตะไคร่ไม่สามารถเกาะท่อเพื่อสังเคราะห์แสงได้ สลายเองตามธรรมชาติ ไม่มีการดื้อยาเพราะไม่ได้ใช้เคมี</p>
+      </div>
+    </div>
+  </section>
+
+  <div class="divider"></div>
+
+  <section class="section">
+    <p class="section-label">ชีวิตวิศวกรเปลี่ยนยังไง</p>
+    <h2>จากเฝ้าตัวเลข สู่จัดการของจริง</h2>
+    <ul class="benefits-list">
+      <li>
+        <span class="check-icon">✓</span>
+        <span><strong>ไม่ต้องปรับค่าเคมีรายวัน</strong> — เปลี่ยนโฟกัสมาดูแลกรองตะกอนที่ Basin แทน งานน้อยลง ผลลัพธ์ชัดขึ้น</span>
+      </li>
+      <li>
+        <span class="check-icon">✓</span>
+        <span><strong>ประหยัดน้ำมหาศาล</strong> — วนน้ำกลับมาใช้ได้ยาวนานขึ้น ลด Blowdown และลดค่าน้ำเสียของโรงงาน</span>
+      </li>
+      <li>
+        <span class="check-icon">✓</span>
+        <span><strong>ประสิทธิภาพแลกเปลี่ยนความร้อนสูงสุดตลอดเวลา</strong> — ผิวท่อสะอาดเหมือนเครื่องใหม่ ไม่มีฉนวนตะกรันมาบดบัง</span>
+      </li>
+      <li>
+        <span class="check-icon">✓</span>
+        <span><strong>ไม่มีตะไคร่ดื้อยา</strong> — ไม่ต้องวนหาสูตร Biocide ใหม่ทุกปี เพราะกลไกเป็นฟิสิกส์ ไม่ใช่เคมีที่ตะไคร่จะปรับตัวได้</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="cta-section" id="contact">
+    <div class="cta-inner">
+      <h2>ขอรับคำปรึกษาจากทีมวิศวกร</h2>
+      <p class="cta-sub">กรอกข้อมูลด้านล่าง ทีมวิศวกรเคมีและชีวภาพของเราจะติดต่อกลับเพื่อวิเคราะห์ระบบของคุณโดยเฉพาะ</p>
+
+      <div id="contact-form">
+        <div class="form-group">
+          <label for="f-name">ชื่อ-นามสกุล / ตำแหน่งงาน</label>
+          <input type="text" id="f-name" placeholder="เช่น วิศวกรสมชาย / ผู้จัดการฝ่ายวิศวกรรม" />
+        </div>
+        <div class="form-group">
+          <label for="f-company">บริษัท / โรงงาน</label>
+          <input type="text" id="f-company" placeholder="เช่น บริษัท อุตสาหกรรมก้าวหน้า จำกัด" />
+        </div>
+        <div class="form-group">
+          <label for="f-email">อีเมล (รับข้อมูลทางเทคนิคและผลทดสอบ)</label>
+          <input type="email" id="f-email" placeholder="somchai@company.com" />
+        </div>
+        <div class="form-group">
+          <label for="f-phone">เบอร์โทรศัพท์ (สำหรับให้ทีมวิศวกรโทรนัดคุย)</label>
+          <input type="tel" id="f-phone" placeholder="081-234-5678" />
+        </div>
+        <button class="submit-btn" id="submit-btn" onclick="handleSubmit()">
+          ลงทะเบียนรับคำปรึกษาและผลทดสอบ →
+        </button>
+        <p class="error-msg" id="error-msg"></p>
+        <p class="form-note">ข้อมูลของคุณจะถูกเก็บเป็นความลับ ใช้เพื่อการติดต่อกลับโดยทีม Herb Force เท่านั้น</p>
+      </div>
+
+      <div class="success-msg" id="success-msg">
+        <div class="success-icon">✅</div>
+        <h3>ได้รับข้อมูลแล้ว ขอบคุณครับ</h3>
+        <p>ทีมวิศวกรของเราจะโทรติดต่อกลับภายใน 1 วันทำการ เพื่อนัดพูดคุยและวิเคราะห์ระบบของคุณโดยเฉพาะ</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 Herb Force Scale Control · ผลิตภัณฑ์สมุนไพรบำบัดน้ำ</p>
+  </footer>
+
+  <script>
+    // ===================================================
+    // วาง Google Apps Script URL ของคุณตรงนี้
+    var SHEET_URL = "YOUR_APPS_SCRIPT_URL";
+    // ===================================================
+
+    async function handleSubmit() {
+      var name    = document.getElementById('f-name').value.trim();
+      var company = document.getElementById('f-company').value.trim();
+      var email   = document.getElementById('f-email').value.trim();
+      var phone   = document.getElementById('f-phone').value.trim();
+      var errorEl = document.getElementById('error-msg');
+      var btn     = document.getElementById('submit-btn');
+
+      errorEl.style.display = 'none';
+
+      if (!name || !email || !phone) {
+        errorEl.textContent = 'กรุณากรอกชื่อ อีเมล และเบอร์โทรศัพท์';
+        errorEl.style.display = 'block';
+        return;
+      }
+      if (!SHEET_URL || SHEET_URL === 'YOUR_APPS_SCRIPT_URL') {
+        errorEl.textContent = 'ยังไม่ได้ตั้งค่า Apps Script URL — กรุณาแก้ไขในไฟล์ index.html';
+        errorEl.style.display = 'block';
+        return;
+      }
+
+      btn.disabled = true;
+      btn.textContent = 'กำลังส่งข้อมูล...';
+
+      try {
+        await fetch(SHEET_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name: name, company: company, email: email, phone: phone })
+        });
+        document.getElementById('contact-form').style.display = 'none';
+        document.getElementById('success-msg').style.display = 'block';
+      } catch (err) {
+        btn.disabled = false;
+        btn.textContent = 'ลงทะเบียนรับคำปรึกษาและผลทดสอบ →';
+        errorEl.textContent = 'เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง';
+        errorEl.style.display = 'block';
+      }
+    }
+  </script>
+
+</body>
+</html>
